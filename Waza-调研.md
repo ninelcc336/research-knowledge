@@ -1,0 +1,73 @@
+# Waza 仓库调研
+
+调研日期：2026-08-01。本文只采用仓库 README、源码清单与 GitHub Release 等一手资料；版本以最新发布的 `v3.32.0` 为准。
+
+## 它是做什么的
+
+Waza 是一组可安装到 AI 编程代理中的“工程习惯”技能包，而不是一个独立应用或代码框架。它把工程师在规划、界面开发、调试、审查、调研、阅读资料和写作中的工作流，封装为供 Claude Code、Codex 等代理按触发条件调用的技能。项目名称取自日语“技（わざ）”，意为反复练成的技术动作。[README：定位与设计理念](https://github.com/tw93/Waza/blob/main/README.md#why)
+
+当前提供 8 个技能：
+
+| 技能 | 适用场景 | 主要产出 |
+| --- | --- | --- |
+| `think` | 新功能、架构、方案取舍 | 先质疑需求并给出可执行、待确认的计划；在批准前不写代码。[来源](https://github.com/tw93/Waza/blob/main/skills/think/SKILL.md) |
+| `ui` | 前端页面、组件和视觉问题 | 有明确视觉方向、并经渲染/截图核验的界面。[来源](https://github.com/tw93/Waza/blob/main/skills/ui/SKILL.md) |
+| `check` | 合并或发布前 | 审阅 diff、提取项目约束、验证证据，并处理获准的发布后续动作。[来源](https://github.com/tw93/Waza/blob/main/README.md#skills) |
+| `hunt` | Bug、回归、异常行为 | 先确认根因，再实施修复的系统化排障。[来源](https://github.com/tw93/Waza/blob/main/README.md#skills) |
+| `write` | 中英文文案编辑 | 去除生硬、模板化表达，使文字更自然。[来源](https://github.com/tw93/Waza/blob/main/README.md#skills) |
+| `learn` | 陌生领域调研 | 收集、消化、列提纲、填充、润色、自检、发布的六阶段流程。[来源](https://github.com/tw93/Waza/blob/main/README.md#skills) |
+| `read` | URL 或 PDF | 按平台路由读取资料，按需求返回摘要或 Markdown 资料。[来源](https://github.com/tw93/Waza/blob/main/skills/read/SKILL.md) |
+| `health` | 代理与项目健康审计 | 检查 Codex/Claude Code 配置、项目指令、验证器和 AI 可维护性。[来源](https://github.com/tw93/Waza/blob/main/README.md#skills) |
+
+技能可以串联，但每一次衔接都要由用户手动触发。例如：功能规划用 `think →（确认后实施）→ check`，调研写作用 `read → learn → write`。这意味着它提供的是带边界和验证规则的操作手册，不会自行连续执行整条流水线。[README：Chaining Skills](https://github.com/tw93/Waza/blob/main/README.md#chaining-skills)
+
+## 怎么安装和使用
+
+推荐安装命令（安装全部八项，面向 Claude Code、Codex、Cursor、Antigravity CLI）：
+
+```bash
+npx skills add tw93/Waza -a claude-code codex cursor antigravity-cli -g -y
+```
+
+安装后，README 说明其将共享副本放入 `~/.agents/skills`，能读取该目录的代理即可复用；后续更新使用：
+
+```bash
+npx skills update -g -y
+```
+
+以上安装、共享目录和更新方式均来自 [README：Install](https://github.com/tw93/Waza/blob/main/README.md#install)。实际使用时，在 Claude Code 输入如 `/think`、`/hunt`、`/check` 的命令；在 Codex 中按技能名调用，并遵循其同一份 `SKILL.md` 工作流。[README：Skills](https://github.com/tw93/Waza/blob/main/README.md#skills)
+
+也可按宿主选择安装方式：
+
+- Claude Code 原生插件：`/plugin marketplace add tw93/Waza`，再执行 `/plugin install waza@waza`；更新命令为 `claude plugin update waza`。
+- Codex 原生插件：`codex plugin marketplace add tw93/Waza`，再执行 `codex plugin add waza@waza`；更新命令为 `codex plugin marketplace upgrade waza`。
+- Claude Desktop：下载并上传最新的 [`waza.zip`](https://github.com/tw93/Waza/releases/latest/download/waza.zip)。
+- Pi：`pi install npm:@tw93/waza`，更新为 `pi update npm:@tw93/waza`。
+
+命令和对应宿主均见 [README：Install](https://github.com/tw93/Waza/blob/main/README.md#install)。
+
+## 可选配置
+
+1. **Claude Code 状态栏**：运行 README 给出的 `setup-statusline.sh` 下载命令；安装脚本要求 `curl`、`python3`，且要求 `jq`（没有时仅尝试通过 Homebrew 安装），会修改 `~/.claude/statusline.sh` 和 `~/.claude/settings.json`。[README：Statusline](https://github.com/tw93/Waza/blob/main/README.md#statusline)；[安装脚本](https://github.com/tw93/Waza/blob/main/scripts/setup-statusline.sh)
+2. **Codex 状态栏**：不使用该脚本，README 建议在 `~/.codex/config.toml` 的 `[tui]` 设置 `status_line` 项目及颜色开关。[README：Statusline](https://github.com/tw93/Waza/blob/main/README.md#statusline)
+3. **可选规则**：`english`（英文纠错）、`anti-patterns`（跨技能防护规则）、`waza-routing`（让非 Claude 宿主优先路由到 Waza）。规则脚本可写入 Claude 的 `~/.claude/rules`，或以带标记、可重复替换的区块写入 Codex 的 `~/.codex/AGENTS.md`；Codex 路径还依赖 `python3` 和 `curl`。[README：Optional Rules](https://github.com/tw93/Waza/blob/main/README.md#optional-rules)；[规则安装源码](https://github.com/tw93/Waza/blob/main/scripts/setup-rule.sh)
+
+## 平台、依赖与注意事项
+
+- `package.json` 标明它是公开 npm 包 `@tw93/waza`，发布内容主要是 `skills`、`rules` 和 shell 脚本，未声明运行时 npm 依赖。因此安装入口的前提是本机可运行 `npx`/Node.js 及 `skills` CLI，而非该包自身提供一个常驻服务。[package.json](https://github.com/tw93/Waza/blob/main/package.json)
+- README 声明支持 Claude Code、Codex、Antigravity、OpenCode、Pi 及兼容的编程代理；使用私有 skills 目录的工具需要在 `-a` 后附加各自代理标识。应以目标代理的技能安装机制为准。[README：Install](https://github.com/tw93/Waza/blob/main/README.md#install)
+- 规则、状态栏脚本会写入用户主目录的代理配置；运行前应审阅脚本并留意现有配置。状态栏脚本在发现已有不同状态栏时会询问是否替换，非交互环境默认保留旧配置。[源码](https://github.com/tw93/Waza/blob/main/scripts/setup-statusline.sh)
+- README 的 `curl | bash` 形式默认拉取“latest release”资源；若追求可复现性，建议下载/审核特定 Release 资产，或按脚本支持的 `WAZA_REF=vX.Y.Z` 固定版本。`main` 是脚本允许的前沿版本选项，稳定使用宜选发布 tag。[规则安装源码](https://github.com/tw93/Waza/blob/main/scripts/setup-rule.sh)
+- 卸载主技能使用 `npx skills remove tw93/Waza -g`；状态栏和规则需要按 README 单独删除，Codex 的规则则删除 `~/.codex/AGENTS.md` 中标记的 Waza 区块。[README：Uninstall](https://github.com/tw93/Waza/blob/main/README.md#uninstall)
+
+## 发布状态
+
+GitHub 最新 Release 为 `v3.32.0`（2026-07-19），提供 `waza.zip`、`setup-rule.sh`、`setup-statusline.sh` 三个资产。本版更新包含精简多个技能的重复说明、`check` 的确定性发布前检查，以及 Antigravity CLI 的原生插件支持。[v3.32.0 Release](https://github.com/tw93/Waza/releases/tag/v3.32.0)
+
+## 适合谁
+
+适合已经在使用 Codex、Claude Code 等代理、但希望把“先想清楚、先找根因、提交前自检、基于一手资料调研”等工程纪律稳定成可复用提示工作流的个人开发者或团队。若只想安装单一代码库依赖、或需要自动无人值守执行完整工作流，Waza 不是直接替代品：它的定位是技能与人工触发的流程约束。[README：Why](https://github.com/tw93/Waza/blob/main/README.md#why)
+
+## 许可证
+
+项目采用 [MIT License](https://github.com/tw93/Waza/blob/main/LICENSE)。

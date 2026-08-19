@@ -1,0 +1,164 @@
+# VOZEB PRO 项目调研
+
+## 1. 调研范围
+
+- 项目：[csyqlz/VOZEB-PRO](https://github.com/csyqlz/VOZEB-PRO)
+- 核查提交：`4de8360f46b3b8e9a76649ec68b6ae3d028345ac`
+- 核查时间：2026-08-18
+- 当前版本：`v0.0.6`
+- 许可证：AGPL-3.0
+
+本笔记以固定提交的 README、`web/package.json`、核心页面与服务端实现、Docker 配置和项目待测试文档为依据。GitHub 的 Star、Fork、Issue 等动态指标未作为稳定结论。
+
+## 2. 一句话结论
+
+VOZEB PRO 是一个面向 AI 内容生产的全栈 SaaS 平台，不是单独的图片或视频模型。它把统一创作 Agent、Canvas 画布、短剧生产线、素材/提示词库、作品社区、积分计费、支付、模型渠道管理和后台运营放到同一套 Next.js 应用中；真正的 AI 生成依赖管理员接入外部模型 API 或自建兼容服务。
+
+## 3. 项目能做什么
+
+### 3.1 统一创作 Agent
+
+- 在同一会话中进行普通文本问答、文生图、图生图、参考图编辑、文生视频、图生视频和文本转音频/语音。
+- 支持图片、视频、音频作为参考素材；视频还支持普通参考图、首帧和首尾帧模式。
+- 支持 Skill、智能规划、手动逻辑模型、比例、画质、清晰度、时长、数量和自定义像素等参数。
+- Agent 可以先生成结构化计划，把任务拆成文本、图片、视频、音频等子任务，并校验依赖关系。
+- 支持历史会话恢复、SSE 进度观察、暂停、恢复、取消、失败重试、多结果选择、WebP 预览和原件下载。
+
+主要入口：[create 页面](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/%28user%29/create/page.tsx)、[Agent Run API](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/api/agent/runs/route.ts)、[Agent 执行器](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/agent-run-executor.ts)。
+
+### 3.2 Canvas 节点式创作
+
+- 使用自研画布组织文本、图片、全景图、视频、音频、生成配置、创作简报、Agent 任务和品牌规范等节点。
+- 支持拖拽、缩放、平移、连线、框选、多选、小地图、撤销/重做、导入/导出、上传和粘贴媒体。
+- Canvas Agent 可以根据节点和连接关系规划多项物料，创建有依赖关系的生成任务，并把结果写回对应节点。
+- 支持任务暂停、恢复、取消、重试，以及全景图沉浸式预览。
+
+主要入口：[Canvas 类型](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/%28user%29/canvas/types.ts)、[Canvas 页面](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/%28user%29/canvas/%5Bid%5D/canvas-client-page.tsx)、[Canvas Store](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/%28user%29/canvas/stores/use-canvas-store.ts)。
+
+### 3.3 短剧生产线
+
+- 导入或编辑长文本剧本，并进行内容结构分析。
+- 自动拆分剧集和镜头，管理角色、场景、道具、线索及其参考图。
+- 生成分镜图片、镜头视频，支持单帧、首尾帧和参考图视频模式。
+- 支持原声、AI 配音或静音，管理对白、旁白和字幕。
+- 保存剧本、分镜、镜头和媒体版本，支持快照、恢复、视觉复盘和单镜头重试。
+- 依赖 FFmpeg/FFprobe 合成整集、缩放、拼接、音频替换、静音和中文字幕烧录。
+- 支持预览、下载和导出剪映草稿 ZIP。
+
+主要入口：[剧本分析](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/drama-analysis.ts)、[短剧渲染 API](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/app/api/drama/render/route.ts)、[FFmpeg 封装](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/ffmpeg.ts)。
+
+### 3.4 素材库和提示词库
+
+- 管理文本、图片、视频和音频素材，支持上传、URL、标签、来源、搜索、筛选、预览、下载、编辑和删除。
+- 素材可以继续发送给统一 Agent、Canvas 或短剧工作区。
+- 提供公共提示词库和个人提示词库，支持分类、标签、关键词检索，并可直接进入创作。
+
+### 3.5 作品广场和社区
+
+- 将素材、Canvas 或短剧发布为作品，经过版本和内容审核后公开分享。
+- 提供公开作品检索、作者主页、点赞、关注、举报、下架、重发和管理员内容治理。
+
+### 3.6 商业化和 SaaS 管理后台
+
+- 用户、角色、账号状态、套餐、权益、每日免费积分、永久积分、CDK、促销、优惠券和邀请奖励。
+- 订单、支付、退款、财务流水、账单导入和对账。
+- 模型渠道、逻辑模型、模型能力、优先级、默认模型和 Agent Skills 管理。
+- 公告、提示词运营、SMTP、站点资料、SEO、本地媒体、S3、业务备份、审计日志和管理员 MFA。
+- 支付实现包含 Stripe、支付宝、微信支付、PayPly 和人工确认模式。
+
+### 3.7 持久化生成任务
+
+- 文本、图片、视频、音频、Agent 和短剧合成任务统一进入服务端任务账本。
+- 独立 generation-worker 负责领取任务、轮询上游、心跳、租约恢复、取消和失败退款。
+- 页面关闭或 SSE 断线后，任务仍可在后台运行；重新打开页面可以继续查询服务端状态。
+
+## 4. 技术栈和适用场景
+
+| 技术或机制 | 项目中的用途 | 适合解决的问题 |
+| --- | --- | --- |
+| Node.js 22 + TypeScript | 服务端运行时、类型安全和全栈开发 | 需要前后端共享类型、快速迭代、异步 I/O 和大量 API 调用的 Web 应用 |
+| Next.js 16 App Router | 页面、SSR、路由、Route Handler、服务端逻辑和 standalone 构建 | 中小型到中大型全栈 Web、后台系统、需要 SEO 或服务端保护密钥的产品 |
+| React 19 | 用户工作区、Canvas、后台和复杂交互界面 | 组件化 UI、编辑器、实时状态和多页面业务系统 |
+| Ant Design 6 | 表格、表单、弹窗、分页、管理后台控件 | 企业后台、运营台、财务和配置类界面 |
+| Tailwind CSS 4 + shadcn 风格 | 布局、响应式样式和主题 | 需要快速组合页面、统一设计令牌和细粒度样式的前端 |
+| Zustand | 用户、主题、配置、Canvas 等客户端共享状态 | 编辑器、画布和跨组件的轻量状态；不适合替代服务端数据源 |
+| TanStack React Query | 服务端数据请求、缓存、刷新、分页和社区交互 | API 驱动的列表、详情、轮询和缓存失效管理 |
+| Motion + Lucide React | 轻量动画、交互反馈和图标 | 交互状态、页面过渡和统一图标系统 |
+| Tiptap | 短剧富文本剧本编辑器 | 剧本、知识库、结构化富文本和可扩展编辑器 |
+| react-markdown + remark-gfm | Agent Markdown 回复和 GFM 内容 | 展示模型文本、说明文档、表格、列表和代码 |
+| PostgreSQL 16 + `pg` | 用户、会话、任务、积分、订单、作品和审计等业务数据 | 强一致交易、复杂查询、事务、索引、并发锁和多实例部署 |
+| 自定义参数化 SQL Repository | 不使用 ORM，直接控制查询、事务、锁和映射 | 需要精细调优 SQL、复杂账务、advisory lock 或渐进式性能优化的系统 |
+| 文件 Provider | 本地 JSON/文件模式回退 | 单机体验、开发和轻量测试；不适合正式多实例商业部署 |
+| AWS SDK v3 S3 | S3 兼容对象存储、预签名 URL、对象迁移和引用保护删除 | 图片、视频、音频等大文件的持久化和横向扩展 |
+| Sharp | 图片格式转换、缩略图、WebP 预览和媒体规范化 | 服务端图片处理、上传规范化和降低预览带宽 |
+| FFmpeg + FFprobe | 短剧合成、转码、补帧、拼接、音频替换和字幕烧录 | 视频流水线、批处理、字幕和多媒体合成；需要可控服务器资源 |
+| 自研协议注册表和逻辑模型路由 | 将真实渠道、上游模型、能力、优先级和计费解耦 | 多供应商 AI 聚合、模型故障切换、管理员运营和自建兼容网关 |
+| OpenAI/Gemini/Veo/Seedance/Stable Diffusion/A1111/Forge 等适配 | 文本、图像、视频和音频生成 | 统一接入不同厂商或自部署模型；质量、费用和权限取决于上游 |
+| 自定义协议草稿 | 根据文档 URL、cURL、请求/响应 JSON 配置新渠道 | 快速接入私有 API、聚合网关或非标准供应商；需要真实请求验收 |
+| generation-worker + SSE | 服务端任务领取、轮询、恢复和实时状态 | 长耗时、可重试、页面关闭后仍需继续的 AI/媒体任务 |
+| Node `crypto` 和自定义支付适配器 | RSA/RSA2、HMAC、微信支付 API v3 解密、Webhook 验签和幂等退款 | 多地区支付、回调安全、退款和账务状态机；需要沙箱与生产验收 |
+| fflate + jsjianyingdraft | ZIP 导入导出、剪映草稿生成 | 浏览器项目交换、媒体打包和面向剪映的后期制作交接 |
+| Photo Sphere Viewer | 360 度全景图预览 | 全景素材、空间内容和沉浸式图片查看 |
+| Fumadocs + MDX | 独立文档站，运行在 3001 端口 | 开源项目文档、部署说明、API 和版本文档 |
+| Vitest + Playwright + ESLint + Prettier | 单元/契约测试、桌面与移动端 E2E、静态检查和格式化 | 复杂业务回归、响应式页面验证和持续集成质量门禁 |
+| Docker multi-stage + GHCR 多架构镜像 | standalone 镜像、Compose、amd64/arm64 发布 | 标准化部署、低内存服务器和跨架构发布 |
+
+依赖总表见：[web/package.json](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/package.json)；文档站依赖见：[docs/package.json](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/docs/package.json)。
+
+## 5. 核心架构理解
+
+典型生成链路是：
+
+`浏览器工作区 -> Next.js Route Handler -> 服务端 Agent/模型路由 -> PostgreSQL 任务与计费账本 -> generation-worker -> 外部模型渠道 -> 媒体下载与 Sharp/FFmpeg 规范化 -> 本地目录或 S3 -> SSE/历史查询返回前端`
+
+这个架构的关键价值是把“模型调用”变成可持久化、可计费、可恢复的业务任务，而不是让浏览器直接持有 API Key 或承担全部轮询责任。
+
+## 6. 部署和外部依赖
+
+- 主应用、PostgreSQL 和 generation-worker 是推荐的基本拓扑；S3、SMTP、支付渠道和外部模型按需启用。
+- Docker Compose 已包含 PostgreSQL、主应用和 Worker；Docker 镜像内安装 FFmpeg、FFprobe 相关运行依赖和中文字体。
+- 项目不需要 GPU。服务器主要承担 Web、数据库、媒体下载/存储和 FFmpeg，AI 推理通常在外部模型服务完成。
+- README 给出的最低可启动规格约为 1 核、1GB 内存加 1GB swap，但只适合安装体验和低并发；日常使用建议 2-4 核、4GB 内存，短剧合成或频繁本地视频处理建议 4 核以上、8GB 以上。
+- 生产环境应使用持久化 PostgreSQL、持久化媒体目录或 S3、HTTPS、独立 Worker 令牌和正式备份策略。
+
+部署参考：[docker-compose.yml](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/docker-compose.yml)、[Dockerfile](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/Dockerfile)、[README 快速开始](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/README.md)。
+
+## 7. 需要特别注意的限制
+
+1. 项目本身不提供完整的 AI 模型，也不等于已经拥有可用的图片、视频或音频生成能力；必须配置外部 API、模型渠道或自建兼容服务。
+2. 协议注册和自动化夹具测试只能证明适配逻辑，不能证明真实供应商的模型质量、额度、SLA、账号权限和长期稳定性。
+3. 项目自己的待测试文档明确列出：真实视频、音频、支付、SMTP、S3、监控、容器、多实例 Worker 和真实模型仍需在目标环境验收。
+4. 短剧整合依赖 FFmpeg/FFprobe；本地媒体模式还会受到磁盘、临时文件、网络下行和转码 CPU 的限制。
+5. 商业订单、支付、作品社区、任务恢复等重要能力依赖 PostgreSQL；文件 Provider 更适合单机开发或演示。
+6. 视频缺少可信封面或关键帧时，视觉复盘会标记为不可用，不会伪造复盘结果。
+7. README 说明 `0.0.6` 不支持从 `0.0.2` 原地升级，旧用户需要按文档重新初始化数据库或数据库卷。
+8. 业务备份不等于完整灾备，PostgreSQL、服务器媒体目录和对象存储需要分别纳入备份与恢复演练。
+9. 项目使用 AGPL-3.0。若把修改后的网络服务或衍生版本进行商业分发、闭源集成，需要先评估源代码提供和许可证义务。
+
+待测试清单：[pending-test.mdx](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/docs/content/docs/progress/pending-test.mdx)。
+
+## 8. 适合和不适合的项目类型
+
+### 适合
+
+- AI 图片、视频、音频能力聚合平台或内部创作工作台。
+- 面向内容团队的广告素材、社交媒体物料、品牌视觉和短剧生产工具。
+- 需要用户、积分、套餐、支付、作品发布和运营后台的一体化 AI SaaS。
+- 需要同时接入多个模型供应商，并希望通过逻辑模型路由屏蔽供应商差异的产品。
+
+### 不太适合
+
+- 只想做一个轻量的单模型聊天或单页文生图 Demo。
+- 要求完全离线、无外部模型 API 的本地 AI 推理平台。
+- 需要在浏览器内完成高并发视频渲染，而没有稳定服务器、对象存储和任务队列的场景。
+- 不愿承担 PostgreSQL、Worker、支付回调、媒体备份和 AGPL-3.0 合规成本的闭源商业项目。
+
+## 9. 复核用关键文件
+
+- [README.md](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/README.md)
+- [channel-protocol-registry.ts](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/channel-protocol-registry.ts)
+- [generation-worker.mjs](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/scripts/generation-worker.mjs)
+- [postgres.ts](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/database/postgres.ts)
+- [object-storage-service.ts](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/object-storage-service.ts)
+- [payment-refund-service.ts](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/payment-refund-service.ts)
+- [ffmpeg.ts](https://github.com/csyqlz/VOZEB-PRO/blob/4de8360f46b3b8e9a76649ec68b6ae3d028345ac/web/src/lib/server/ffmpeg.ts)
