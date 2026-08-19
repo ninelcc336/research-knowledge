@@ -1,3 +1,16 @@
+---
+title: "VibeVoice 项目调研"
+date: 2026-08-19
+category: "AI语音"
+tags:
+  - 语音识别
+  - 语音合成
+  - 多说话人语音
+  - 实时语音
+  - 语音模型
+  - 开源项目
+---
+
 # VibeVoice 项目调研
 
 ## 1. 调研范围
@@ -190,4 +203,3 @@ Windows 部署需要 GCC/Clang，官方明确不支持 MSVC，推荐 MinGW-w64�
 - [CUDA OOM Issue #210](https://github.com/microsoft/VibeVoice/issues/210)
 - [重复转录 Issue #415](https://github.com/microsoft/VibeVoice/issues/415)
 - [语音预设加载 Issue #392](https://github.com/microsoft/VibeVoice/issues/392)
-

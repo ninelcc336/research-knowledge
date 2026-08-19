@@ -1,3 +1,15 @@
+---
+title: "mattpocock/skills 调研"
+date: 2026-08-01
+category: "Agent工程"
+tags:
+  - Agent技能
+  - AI编程
+  - 工程工作流
+  - Codex
+  - Claude Code
+---
+
 # mattpocock/skills 调研
 
 > 调研日期：2026-08-01。本文只引用仓库作者维护的 GitHub 仓库、源码与 GitHub Releases 等一手资料。
