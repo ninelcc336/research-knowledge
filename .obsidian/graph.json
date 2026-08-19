@@ -5,18 +5,47 @@
   "showAttachments": false,
   "hideUnresolved": false,
   "showOrphans": true,
-  "collapse-color-groups": true,
-  "colorGroups": [],
-  "collapse-display": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:Agent工程  ",
+      "color": {
+        "a": 1,
+        "rgb": 5020415
+      }
+    },
+    {
+      "query": "path:AI内容创作  ",
+      "color": {
+        "a": 1,
+        "rgb": 15902298
+      }
+    },
+    {
+      "query": "path:AI语音  ",
+      "color": {
+        "a": 1,
+        "rgb": 6475182
+      }
+    },
+    {
+      "query": "file:AGENTS.md",
+      "color": {
+        "a": 1,
+        "rgb": 16777215
+      }
+    }
+  ],
+  "collapse-display": false,
   "showArrow": false,
   "textFadeMultiplier": 0,
-  "nodeSizeMultiplier": 1,
-  "lineSizeMultiplier": 1,
-  "collapse-forces": true,
-  "centerStrength": 0.518713248970312,
-  "repelStrength": 10,
-  "linkStrength": 1,
-  "linkDistance": 250,
+  "nodeSizeMultiplier": 1.24746835443038,
+  "lineSizeMultiplier": 1.15443037974684,
+  "collapse-forces": false,
+  "centerStrength": 0.550632911392405,
+  "repelStrength": 15.211970074813,
+  "linkStrength": 0.848101265822785,
+  "linkDistance": 200,
   "scale": 1,
-  "close": false
+  "close": true
 }
