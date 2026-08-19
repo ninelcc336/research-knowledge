@@ -6,6 +6,8 @@
 
 ### Agent工程
 
+- [pen.dev VS Code 插件、Windows 桌面端、MCP 与 CLI 区别调研](./Agent工程/2026-08-20-pen.dev客户端与集成方式对比.md)（2026-08-20）：区分 IDE 插件、Windows 桌面应用、MCP 协议层和 CLI 客户端的职责、能力、认证方式与适用场景，并标注官方 Windows 可用性页面之间的冲突。
+- [Codex 在 VS Code 中的使用能力调研](./Agent工程/2026-08-20-Codex在VS-Code中的使用能力.md)（2026-08-20）：确认 Codex 提供 VS Code 官方扩展，并支持编辑器上下文、修改审查和较大任务委托。
 - [适合 Agent 协作前端设计的工具调研](./Agent工程/2026-08-18-Agent协作前端设计工具.md)（2026-08-18）：比较适合 Agent 参与原型、界面设计和前端交付的工具及协作流程。
 - [mattpocock/skills 调研](./Agent工程/2026-08-01-mattpocock-skills.md)（2026-08-01）：分析面向 Claude Code、Codex 等编程代理的工程技能集合、调用方式与适用流程。
 - [Waza 仓库调研](./Agent工程/2026-08-01-Waza.md)（2026-08-01）：介绍可安装到 AI 编程代理中的工程工作流技能包及其使用边界。
