@@ -6,6 +6,8 @@
 
 ### Agent工程
 
+- [Agent 项目级记忆方案调研](./Agent工程/2026-08-20-Agent项目级记忆方案.md)（2026-08-20）：比较 Codex/ChatGPT、Claude Code、Pi、OpenCode 和 WorkBuddy 的项目规则、自动记忆、会话状态、作用域与跨 Agent 落地方案。
+- [Agent 连接数据库方案调研](./Agent工程/2026-08-20-Agent连接数据库方案.md)（2026-08-20）：比较直接驱动、MCP 数据库工具、Text-to-SQL 框架、语义层和厂商 MCP，并给出生产权限、审批、隔离与审计基线。
 - [pen.dev VS Code 插件、Windows 桌面端、MCP 与 CLI 区别调研](./Agent工程/2026-08-20-pen.dev客户端与集成方式对比.md)（2026-08-20）：区分 IDE 插件、Windows 桌面应用、MCP 协议层和 CLI 客户端的职责、能力、认证方式与适用场景，并标注官方 Windows 可用性页面之间的冲突。
 - [Codex 在 VS Code 中的使用能力调研](./Agent工程/2026-08-20-Codex在VS-Code中的使用能力.md)（2026-08-20）：确认 Codex 提供 VS Code 官方扩展，并支持编辑器上下文、修改审查和较大任务委托。
 - [适合 Agent 协作前端设计的工具调研](./Agent工程/2026-08-18-Agent协作前端设计工具.md)（2026-08-18）：比较适合 Agent 参与原型、界面设计和前端交付的工具及协作流程。
@@ -21,6 +23,10 @@
 
 - [VibeVoice 项目调研](./AI语音/2026-08-19-VibeVoice.md)（2026-08-19）：评估 VibeVoice 在长音频识别、多说话人语音和实时语音生成方面的能力与限制。
 - [VoxCPM 项目调研报告](./AI语音/2026-08-19-VoxCPM.md)（2026-08-19）：评估 VoxCPM2 的多语言语音合成、音色设计、声音克隆及部署条件。
+
+### 设计工具
+
+- [开源 Logo、产品图标工具及 Agent Skills 调研](./设计工具/2026-08-20-开源Logo与产品图标工具及Agent-Skills.md)（2026-08-20）：比较 Inkscape、Penpot、SVG-Edit、open-assets 等开源工具，以及 Logo、App Icon 和品牌一致性相关的 Agent Skills 与图标素材库。
 
 ## 归档约定
 
