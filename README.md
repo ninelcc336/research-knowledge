@@ -24,6 +24,10 @@
 - [VibeVoice 项目调研](./AI语音/2026-08-19-VibeVoice.md)（2026-08-19）：评估 VibeVoice 在长音频识别、多说话人语音和实时语音生成方面的能力与限制。
 - [VoxCPM 项目调研报告](./AI语音/2026-08-19-VoxCPM.md)（2026-08-19）：评估 VoxCPM2 的多语言语音合成、音色设计、声音克隆及部署条件。
 
+### 计算机视觉
+
+- [Tesseract.js 项目调研](./计算机视觉/2026-08-21-Tesseract-js项目.md)（2026-08-21）：分析 Tesseract.js 的 WebAssembly OCR 架构、浏览器与 Node.js 用法、Worker 并发、性能边界及 PDF/手写/复杂文档限制。
+
 ### 设计工具
 
 - [开源 Logo、产品图标工具及 Agent Skills 调研](./设计工具/2026-08-20-开源Logo与产品图标工具及Agent-Skills.md)（2026-08-20）：比较 Inkscape、Penpot、SVG-Edit、open-assets 等开源工具，以及 Logo、App Icon 和品牌一致性相关的 Agent Skills 与图标素材库。
