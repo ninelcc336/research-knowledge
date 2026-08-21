@@ -6,6 +6,8 @@
 
 ### Agent工程
 
+- [emilkowalski/skills 调研](./Agent工程/2026-08-21-emilkowalski-skills.md)（2026-08-21）：分析面向 UI 设计工程、Web/Expo 动画、动效审查、原型探索和前端依赖选择的 Agent Skills 集合，并评估其工作流、安装方式与适用边界。
+- [Nutlope/hallmark 设计 Skill 调研](./Agent工程/2026-08-21-Nutlope-hallmark设计Skill.md)（2026-08-21）：分析面向 Claude Code、Cursor 和 Codex 的反 AI 模板设计 Skill，涵盖宏结构、主题路由、57+1（含 38a）项审查门禁、安装方式、能力边界与当前文档风险。
 - [Agent 项目级记忆方案调研](./Agent工程/2026-08-20-Agent项目级记忆方案.md)（2026-08-20）：比较 Codex/ChatGPT、Claude Code、Pi、OpenCode 和 WorkBuddy 的项目规则、自动记忆、会话状态、作用域与跨 Agent 落地方案。
 - [Agent 连接数据库方案调研](./Agent工程/2026-08-20-Agent连接数据库方案.md)（2026-08-20）：比较直接驱动、MCP 数据库工具、Text-to-SQL 框架、语义层和厂商 MCP，并给出生产权限、审批、隔离与审计基线。
 - [pen.dev VS Code 插件、Windows 桌面端、MCP 与 CLI 区别调研](./Agent工程/2026-08-20-pen.dev客户端与集成方式对比.md)（2026-08-20）：区分 IDE 插件、Windows 桌面应用、MCP 协议层和 CLI 客户端的职责、能力、认证方式与适用场景，并标注官方 Windows 可用性页面之间的冲突。
