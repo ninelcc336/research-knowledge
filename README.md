@@ -6,6 +6,8 @@
 
 ### Agent工程
 
+- [nexu-io/open-design 项目调研](./Agent工程/2026-08-22-OpenDesign项目.md)（2026-08-22）：分析本地优先的 Agent 设计工作台、Skills/模板/设计系统/插件四层模型、MCP 与多 CLI 运行时、文件预览导出、隐私安全边界和自托管风险。
+- [OpenPencil 开源设计编辑器与 Agent 工具链调研](./Agent工程/2026-08-22-OpenPencil.md)（2026-08-22）：分析 OpenPencil 的开源定位、`.fig`/`.pen` 文件支持、编辑器架构、AI/MCP、CLI、Vue SDK、协作方式、Figma 兼容性和落地风险。
 - [emilkowalski/skills 调研](./Agent工程/2026-08-21-emilkowalski-skills.md)（2026-08-21）：分析面向 UI 设计工程、Web/Expo 动画、动效审查、原型探索和前端依赖选择的 Agent Skills 集合，并评估其工作流、安装方式与适用边界。
 - [nextlevelbuilder/ui-ux-pro-max-skill 调研](./Agent工程/2026-08-21-ui-ux-pro-max-skill.md)（2026-08-21）：分析面向多种 AI 编程助手的 UI/UX 设计智能 Skill，涵盖结构化设计目录、BM25 检索、设计系统生成、CLI 安装、质量门禁、版本漂移与视觉回归风险。
 - [Nutlope/hallmark 设计 Skill 调研](./Agent工程/2026-08-21-Nutlope-hallmark设计Skill.md)（2026-08-21）：分析面向 Claude Code、Cursor 和 Codex 的反 AI 模板设计 Skill，涵盖宏结构、主题路由、57+1（含 38a）项审查门禁、安装方式、能力边界与当前文档风险。
