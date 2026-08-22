@@ -6,6 +6,7 @@
 
 ### Agent工程
 
+- [OpenDesign、OpenPencil 与 pen.dev 对比报告](./Agent工程/2026-08-22-OpenDesign-OpenPencil-pen.dev对比.md)（2026-08-22）：从定位、文件格式、Agent/MCP/CLI、扩展部署、选型场景和组合工作流比较三种工具，并明确它们分别适合代码媒体交付、Figma `.fig` 自动化和 `.pen` 设计协作。
 - [nexu-io/open-design 项目调研](./Agent工程/2026-08-22-OpenDesign项目.md)（2026-08-22）：分析本地优先的 Agent 设计工作台、Skills/模板/设计系统/插件四层模型、MCP 与多 CLI 运行时、文件预览导出、隐私安全边界和自托管风险。
 - [OpenPencil 开源设计编辑器与 Agent 工具链调研](./Agent工程/2026-08-22-OpenPencil.md)（2026-08-22）：分析 OpenPencil 的开源定位、`.fig`/`.pen` 文件支持、编辑器架构、AI/MCP、CLI、Vue SDK、协作方式、Figma 兼容性和落地风险。
 - [emilkowalski/skills 调研](./Agent工程/2026-08-21-emilkowalski-skills.md)（2026-08-21）：分析面向 UI 设计工程、Web/Expo 动画、动效审查、原型探索和前端依赖选择的 Agent Skills 集合，并评估其工作流、安装方式与适用边界。
