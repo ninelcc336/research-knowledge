@@ -38,6 +38,10 @@
 
 - [开源 Logo、产品图标工具及 Agent Skills 调研](./设计工具/2026-08-20-开源Logo与产品图标工具及Agent-Skills.md)（2026-08-20）：比较 Inkscape、Penpot、SVG-Edit、open-assets 等开源工具，以及 Logo、App Icon 和品牌一致性相关的 Agent Skills 与图标素材库。
 
+### 图像处理
+
+- [JPG、PNG 图片分层处理与开源方案](./图像处理/2026-08-23-JPG-PNG图片分层处理与开源方案.md)（2026-08-23）：说明 JPG/PNG 与图层工程文件的区别，比较 GIMP、Krita、OpenRaster、ImageMagick、Pillow、SAM、IOPaint、LaMa 等方案，并给出分层、加水印、抠图、移除和添加元素的组合架构。
+
 ## 归档约定
 
 - 分类目录按调研内容动态生成，每篇调研只归入一个主分类，交叉领域使用标签表达。
