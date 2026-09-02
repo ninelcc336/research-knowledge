@@ -42,6 +42,10 @@
 
 - [JPG、PNG 图片分层处理与开源方案](./图像处理/2026-08-23-JPG-PNG图片分层处理与开源方案.md)（2026-08-23）：说明 JPG/PNG 与图层工程文件的区别，比较 GIMP、Krita、OpenRaster、ImageMagick、Pillow、SAM、IOPaint、LaMa 等方案，并给出分层、加水印、抠图、移除和添加元素的组合架构。
 
+### 模拟器
+
+- [热门好用模拟器项目比较](./模拟器/2026-09-02-热门好用模拟器项目比较.md)（2026-09-02）：按 Android 开发测试、Linux Android 运行环境、游戏主机和跨架构仿真比较 Android Emulator、Genymotion、Waydroid、RetroArch、Dolphin、PCSX2、PPSSPP、RPCS3、melonDS 与 QEMU，并给出目标导向的选型建议。
+
 ## 归档约定
 
 - 分类目录按调研内容动态生成，每篇调研只归入一个主分类，交叉领域使用标签表达。
