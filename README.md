@@ -22,6 +22,7 @@
 
 ### AI内容创作
 
+- [AI混剪视频与口型、语气、语速同步开源方案调研](./AI内容创作/2026-09-04-AI混剪视频与口型语气同步开源方案.md)（2026-09-04）：评估直播高光发现、词级对齐、音色/语气控制、口型重绘和多片段自然拼接，结论是采用 Clips Kitty/FunClip、WhisperX/FunASR、CosyVoice/OpenVoice、MuseTalk 与 FFmpeg 的组合式管线。
 - [AI生成产品的无限画布开源技术调研](./AI内容创作/2026-08-19-AI生成无限画布开源技术.md)（2026-08-19）：分 React、Vue、原生 Web 三个模块比较无限画布、节点工作流、协作编辑和图片/视频生成后端，并给出产品落地组合建议。
 - [VOZEB PRO 项目调研](./AI内容创作/2026-08-18-VOZEB-PRO.md)（2026-08-18）：分析集成多模态生成、创作 Agent、素材管理和 SaaS 能力的内容生产平台。
 
@@ -36,6 +37,7 @@
 
 ### 设计工具
 
+- [Morphicons 官网与 SVG 图标变形库调研](./设计工具/2026-09-17-Morphicons.md)（2026-09-17）：确认 morphicons.com 是描边 SVG 图标万能变形库的 Playground，适合 Lucide/Tabler 等状态切换微动效，不支持 Font Awesome 等填充图标。
 - [开源 Logo、产品图标工具及 Agent Skills 调研](./设计工具/2026-08-20-开源Logo与产品图标工具及Agent-Skills.md)（2026-08-20）：比较 Inkscape、Penpot、SVG-Edit、open-assets 等开源工具，以及 Logo、App Icon 和品牌一致性相关的 Agent Skills 与图标素材库。
 
 ### 图像处理
@@ -45,6 +47,10 @@
 ### 模拟器
 
 - [热门好用模拟器项目比较](./模拟器/2026-09-02-热门好用模拟器项目比较.md)（2026-09-02）：按 Android 开发测试、Linux Android 运行环境、游戏主机和跨架构仿真比较 Android Emulator、Genymotion、Waydroid、RetroArch、Dolphin、PCSX2、PPSSPP、RPCS3、melonDS 与 QEMU，并给出目标导向的选型建议。
+
+### 桌面应用
+
+- [Electron、Vue3 与 Python 桌面应用更新与热更新方案调研](./桌面应用/2026-08-24-Electron-Vue3-Python桌面应用更新与热更新方案.md)（2026-08-24）：比较完整安装包、Electron 差分更新、Vue renderer 组件更新和 Python 服务独立更新，并给出签名、回滚、阿里云/CDN 成本核算和分阶段落地方案。
 
 ## 归档约定
 
