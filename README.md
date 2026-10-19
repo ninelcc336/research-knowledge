@@ -6,7 +6,7 @@
 
 ### Agent工程
 
-- [Agent Browser、Playwright CLI/Skills 与 Playwright MCP 对比调研](./Agent工程/2026-10-17-Agent-Browser与Playwright-MCP对比.md)（2026-10-17）：核查 Playwright CLI、CLI Skills、Test Agents 和 MCP，并与 Agent Browser 比较通用网页操作、Playwright 测试闭环、上下文成本和客户端接入方式。
+- [Agent Browser 与 Playwright MCP 对比调研](./Agent工程/2026-10-17-Agent-Browser与Playwright-MCP对比.md)（2026-10-17）：核查 Playwright CLI、CLI Skills、Test Agents 和 MCP，并与 Agent Browser 比较通用网页操作、Playwright 测试闭环、上下文成本和客户端接入方式。
 - [OpenDesign、OpenPencil 与 pen.dev 对比报告](./Agent工程/2026-08-22-OpenDesign-OpenPencil-pen.dev对比.md)（2026-08-22）：从定位、文件格式、Agent/MCP/CLI、扩展部署、选型场景和组合工作流比较三种工具，并明确它们分别适合代码媒体交付、Figma `.fig` 自动化和 `.pen` 设计协作。
 - [nexu-io/open-design 项目调研](./Agent工程/2026-08-22-OpenDesign项目.md)（2026-08-22）：分析本地优先的 Agent 设计工作台、Skills/模板/设计系统/插件四层模型、MCP 与多 CLI 运行时、文件预览导出、隐私安全边界和自托管风险。
 - [OpenPencil 开源设计编辑器与 Agent 工具链调研](./Agent工程/2026-08-22-OpenPencil.md)（2026-08-22）：分析 OpenPencil 的开源定位、`.fig`/`.pen` 文件支持、编辑器架构、AI/MCP、CLI、Vue SDK、协作方式、Figma 兼容性和落地风险。
@@ -23,6 +23,8 @@
 
 ### AI内容创作
 
+- [muqi225 情绪短片与 Remotion、Three.js、SVG 混合制作方案](./AI内容创作/2026-10-19-muqi225情绪短片与Remotion-Three.js-SVG混合制作方案.md)（2026-10-19）：核对目标账号与合集，区分三维渲染推断和已确认信息，给出 Remotion 帧驱动、三维角色与 SVG 远景的混合制作及样片验证方案。
+- [抖音、B站、小红书等平台发视频与图文的收益方式调研](./AI内容创作/2026-10-18-抖音-B站-小红书等平台发视频与图文的收益方式.md)（2026-10-18）：比较平台广告/创作激励、充电、蒲公英商单、买手分销、直播和任务收益，梳理视频与图文的资格差异、结算方式及需以后台确认的动态门槛。
 - [目标抖音视频的 Code Agent 制作技术调研](./AI内容创作/2026-10-17-目标抖音视频的Code-Agent制作技术调研.md)（2026-10-17）：单独核查“claude，我妈问我在干嘛”视频的画面层、Code Agent 职责边界、Remotion/3D/剪辑产线、时间线工程和 Windows 最小试做方案。
 - [Vibe知识大赏短视频制作流程与风格拆解](./AI内容创作/2026-10-17-Vibe知识大赏短视频制作流程与风格拆解.md)（2026-10-17）：归纳原生代码动画、AI 素材剪辑和混合制作三条产线，拆解“先演后命名”、字幕与可见动作对应、分镜和渲染 QA，并注明中文平台案例的证据边界。
 - [Claude Opus 5.5 代码视频与 Agent Skill 仓库调研](./AI内容创作/2026-10-15-Claude-Opus-5-5代码视频与Agent-Skill仓库.md)（2026-10-15）：核查四个已定位仓库的 703 条提示词、Lemo 制片 Skill、59 个案例和 117 项工具索引，区分代码渲染与混合媒体流程，并分析安装、Windows 兼容性和复现边界；单数同名目标待确认。
