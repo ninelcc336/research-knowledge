@@ -37,6 +37,7 @@
 
 ### AI语音
 
+- [VoiceStudio 项目调研](./AI语音/2026-10-26-VoiceStudio项目调研.md)（2026-10-26）：分析其本地优先语音工作台、多模型目录、视频配音、桌面与 MCP 接入，并区分 OmniVoice 的语言覆盖、各引擎硬件差异及应用和模型许可边界。
 - [IndexTTS、Qwen3-TTS 与 VoxCPM2 对比调研](./AI语音/2026-10-20-IndexTTS-Qwen3-TTS与VoxCPM2对比.md)（2026-10-20）：结合仓库旧调研与当前官方源码、模型和近期研究，比较情绪配音、音色设计、克隆、多语言、流式部署与许可，区分 IndexTTS-2.5、Qwen 模型分工和 VoxCPM2 模式边界。
 - [MiniMax T2A HTTP 语音合成 API 接入与计费调研](./AI语音/2026-10-10-MiniMax-T2A-HTTP-API.md)（2026-10-10）：核查 HTTP TTS 的接入、流式响应、Skill/CLI/MCP 集成与 API 计费，区分 Audio 网页声贝、开放平台余额、语音资源包和 M Plan 额度。
 - [VibeVoice 项目调研](./AI语音/2026-08-19-VibeVoice.md)（2026-08-19）：评估 VibeVoice 在长音频识别、多说话人语音和实时语音生成方面的能力与限制。
