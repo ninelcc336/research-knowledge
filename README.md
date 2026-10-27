@@ -6,6 +6,7 @@
 
 ### Agent工程
 
+- [Magpie 与 CC Switch 对比调研](./Agent工程/2026-10-27-Magpie与CC-Switch对比.md)（2026-10-27）：比较两者的 Agent 配置管理、请求代理、协议转换、路由回退、订阅账号、MCP/Skills/Prompt、用量观测与隐私边界，并给出单独使用和组合使用建议。
 - [Agent Browser、Playwright、ego lite 与 Chrome MCP：面向 Agent 的浏览器工具选型](./Agent工程/2026-10-24-Agent-Browser-Playwright-ego-lite与Chrome-MCP选型.md)（2026-10-24）：区分 CLI、代码库、浏览器与 MCP 入口，核查两组厂商基准、登录复用和失败恢复，按任务完成率、Token 与成功结果成本给出通用 Agent、真实网站、测试和诊断的选型建议。
 - [Agent Browser 与 Playwright MCP 对比调研](./Agent工程/2026-10-17-Agent-Browser与Playwright-MCP对比.md)（2026-10-17）：核查 Playwright CLI、CLI Skills、Test Agents 和 MCP，并与 Agent Browser 比较通用网页操作、Playwright 测试闭环、上下文成本和客户端接入方式。
 - [OpenDesign、OpenPencil 与 pen.dev 对比报告](./Agent工程/2026-08-22-OpenDesign-OpenPencil-pen.dev对比.md)（2026-08-22）：从定位、文件格式、Agent/MCP/CLI、扩展部署、选型场景和组合工作流比较三种工具，并明确它们分别适合代码媒体交付、Figma `.fig` 自动化和 `.pen` 设计协作。
