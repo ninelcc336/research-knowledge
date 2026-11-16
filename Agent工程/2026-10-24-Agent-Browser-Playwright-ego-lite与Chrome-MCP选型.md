@@ -16,6 +16,8 @@ tags:
 
 > 调研日期：2026-10-24。目标是比较 Agent 的任务完成率、失败恢复、模型往返、Token 与实际结果成本。本文核查官方文档、公开运行时说明、两组厂商基准及部分问题报告；未在本机安装并对四套工具进行同条件端到端跑分。功能事实、厂商测试与选型判断分别说明。
 
+本次更新：整合 2026-10-17 的 Agent Browser/Playwright 对比与 2026-10-24 的扩展选型，保留 CLI、Skills、MCP 和测试 Agent 的接入示例，采用后次核查对运行时、登录复用和成本口径的修正。合并整理未重新联网核查；各版本、基准与问题状态仍以原核查日期为准。
+
 ## 1. 先给结论
 
 **没有充分证据证明四者中存在适用于所有 Agent、所有网站的唯一冠军。** 但可以明确给出使用建议：
@@ -216,9 +218,64 @@ ego 的 JS 组合、Agent Browser 的 batch/delta、Playwright CLI 的局部快�
 
 最终选择可用一个小规模验收来决定，无需先全面迁移：挑选你自己的 10–20 个代表任务，所有工具使用同一模型、思考档、登录起点和验收标准；各工具使用其推荐 Skill 与合理配置。分别记录首次成功率、无效动作、人工介入、模型轮数、各类 Token、含失败总费用及 P50/P95。登录准备成本与正式执行成本分开列出；每种任务重复 3–5 次、轮换顺序，并用站点状态或产物验收。选取**成功结果成本最低、人工介入最少、长尾耗时可接受**的方案。
 
-## 8. 与仓库旧调研的关系
+## 8. 接入示例与测试工作流
 
-本仓库 2026-10-17 的《Agent Browser 与 Playwright MCP 对比调研》仍有场景拆分价值，但其中“Agent Browser 使用 Playwright 后端”的描述与本次当前官方文档不符，后续引用应以本篇及目标版本源码为准。旧篇关于“哪个更省上下文”的绝对表达也应结合 batch、按需工具发现、局部读取和完整任务成本重新判断。本文未修改旧调研正文。
+以下命令和配置整合自 2026-10-17 的接入说明；产品定位按 2026-10-24 的核查修正。它们用于说明入口，未在本机执行验证；实际使用时应核对并固定安装版本，不能把示例中的 `latest` 当成已验证版本。
+
+### 8.1 Agent Browser CLI 与 Skill
+
+```bash
+npm install -g agent-browser
+agent-browser install
+npx skills add vercel-labs/agent-browser
+agent-browser open https://example.com
+agent-browser snapshot -i
+agent-browser click @e1
+agent-browser fill @e2 "文本"
+agent-browser read
+```
+
+`@e1`、`@e2` 只是示例，必须替换为当前快照返回的引用；页面导航或结构变化后重新观察。可按需使用 `--json`、`--session` 和 `agent-browser mcp`，工具组与 Skill 以安装版本为准。旧文“Agent Browser 使用 Playwright 后端”的概括已由当前 Rust/CDP 资料修正。[S1]
+
+### 8.2 Playwright CLI、Skills 与 Test Agents
+
+```bash
+npm install -g @playwright/cli@latest
+playwright-cli install --skills
+playwright-cli open https://example.com
+playwright-cli snapshot
+playwright-cli click e15
+```
+
+`e15` 同样要取自真实快照。Skills 是给能执行命令的 Agent 提供操作说明；CLI 与 MCP 是不同接入入口，不必因为安装了 Skill 就同时启用 MCP。[S2][S3]
+
+已有 Playwright 测试项目、需要生成和修复测试时，可以按官方目标客户端生成 Test Agents：
+
+```bash
+npx playwright init-agents --loop=codex
+# 或为 Claude 生成：npx playwright init-agents --loop=claude
+```
+
+planner、generator、healer 分别负责计划、测试生成与失败修复；它们围绕测试工程工作，不是通用网页操作客户端。更新 Playwright 后应按官方说明重新生成相关定义。一次性的 Agent 操作也不会自动变成长期可维护的回归测试。[S17]
+
+### 8.3 Playwright MCP
+
+标准 MCP 配置的形状如下，具体配置文件位置由客户端决定：
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+MCP 客户端通过工具发现和调用使用浏览器；登录态与隔离可结合持久 profile、storage state、CDP 或扩展连接方式。多个任务或 Agent 共享浏览器时，仍应明确会话、账号与生命周期范围，不能把接口标准化理解成账号或任务自动隔离。[S3]
+
+旧文对“CLI 一定更省上下文”的绝对判断也已收紧：应结合批处理、局部观察、按需工具发现、缓存、失败恢复和最终成功结果成本评估，不能只比较工具 schema 大小。
 
 ## 9. 资料来源与证据性质
 
@@ -238,5 +295,6 @@ ego 的 JS 组合、Agent Browser 的 batch/delta、Playwright CLI 的局部快�
 - **[S14] ego Windows 用户问题报告**：[#546](https://github.com/citrolabs/ego-lite/issues/546)。Chrome 156 profile 导入错误及独立用户确认；查询时开放，本文未本机复现。
 - **[S15] ego native snapshot 需求文档**：[固定快照](https://github.com/citrolabs/ego-lite/blob/d392204d1ea1a8027a591ab2b0129c2e11d85f26/docs/native-snapshot-ref-requirement.md)。记录 iframe ref、frame 归属和 locator 边界；不直接等同于最新闭源浏览器二进制的缺陷清单。
 - **[S16] HyperTeams 竞品厂商基准**：[Benchmark 页面](https://hyperteams.net/benchmarks)。392 功能任务准确率、成功耗时中位数、版本和统计方法。本文未独立复跑，定性功能对比需另行核查。
+- **[S17] Playwright Test Agents 官方说明**：[Test Agents](https://playwright.dev/docs/test-agents)。planner/generator/healer、生成命令与更新后的重新生成建议，沿用 2026-10-17 核查内容；合并时未重新验证命令。
 
 检索使用 agent-reach 的 Exa、GitHub CLI 和网页读取流程；受可用渠道影响，未将需要登录的社交平台评论计入结论。官方主分支、npm 与网页均为调研时快照。
