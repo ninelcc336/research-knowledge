@@ -6,8 +6,8 @@
 
 ### Agent工程
 
+- [Magpie 与 CC Switch 对比调研](./Agent工程/2026-11-17-Magpie与CC-Switch对比.md)（2026-11-17）：复查最新发布与稳定频道，比较统一网关、客户端路由及聚合矩阵、Claude 订阅账号、可还原与不可逆脱敏、WSL 和远程部署，并修正旧稿的 Desktop 聚合范围。
 - [AI 与 Agent 三维建模技术及连接方式调研](./Agent工程/2026-11-15-AI与Agent三维建模技术及连接方式.md)（2026-11-15）：区分视觉网格、参数化 CAD 与生成式 3D，比较 Blender、CadQuery/build123d、FreeCAD、Zoo 和云端生成接口，给出 CLI、Python、MCP、HTTP 的接入方式与试做验收建议。
-- [Magpie 与 CC Switch 对比调研](./Agent工程/2026-10-27-Magpie与CC-Switch对比.md)（2026-10-27）：比较两者的 Agent 配置管理、请求代理、协议转换、路由回退、订阅账号、MCP/Skills/Prompt、用量观测与隐私边界，并给出单独使用和组合使用建议。
 - [Agent Browser、Playwright、ego lite 与 Chrome MCP：面向 Agent 的浏览器工具选型](./Agent工程/2026-10-24-Agent-Browser-Playwright-ego-lite与Chrome-MCP选型.md)（2026-10-24）：区分 CLI、代码库、浏览器与 MCP 入口，核查两组厂商基准、登录复用和失败恢复，按任务完成率、Token 与成功结果成本给出选型建议，并保留 CLI、Skills、MCP 和测试 Agent 的接入示例。
 - [nexu-io/open-design 项目调研](./Agent工程/2026-08-22-OpenDesign项目.md)（2026-08-22）：分析本地优先的 Agent 设计工作台、Skills/模板/设计系统/插件四层模型、MCP 与多 CLI 运行时、文件预览导出、隐私安全边界和自托管风险。
 - [OpenDesign、OpenPencil 与 pen.dev 对比报告](./Agent工程/2026-08-22-OpenDesign-OpenPencil-pen.dev对比.md)（2026-08-22）：从定位、文件格式、Agent/MCP/CLI、扩展部署、选型场景和组合工作流比较三种工具，并明确它们分别适合代码媒体交付、Figma `.fig` 自动化和 `.pen` 设计协作。
@@ -37,6 +37,13 @@
 - [AI混剪视频与口型、语气、语速同步开源方案调研](./AI内容创作/2026-09-04-AI混剪视频与口型语气同步开源方案.md)（2026-09-04）：评估直播高光发现、词级对齐、音色/语气控制、口型重绘和多片段自然拼接，结论是采用 Clips Kitty/FunClip、WhisperX/FunASR、CosyVoice/OpenVoice、MuseTalk 与 FFmpeg 的组合式管线。
 - [AI生成产品的无限画布开源技术调研](./AI内容创作/2026-08-19-AI生成无限画布开源技术.md)（2026-08-19）：分 React、Vue、原生 Web 三个模块比较无限画布、节点工作流、协作编辑和图片/视频生成后端，并给出产品落地组合建议。
 - [VOZEB PRO 项目调研](./AI内容创作/2026-08-18-VOZEB-PRO.md)（2026-08-18）：分析集成多模态生成、创作 Agent、素材管理和 SaaS 能力的内容生产平台。
+
+### AI服务
+
+- [Claude Code 订阅固定出口 VPS 选型](./AI服务/2026-11-18-Claude-Code订阅固定出口VPS选型.md)（2026-11-18）：核查 LisaHost 目录，解释 VPS、双 ISP 住宅 IP 与三网优化，为河南电信筛选美国 9929、日本及韩国月付；补充纽约比较、特殊退款限制，并保留 11 月 17 日 DMIT、搬瓦工和社区证据。
+- [Cliproxy 代理 IP 产品与 Claude Code 适用性](./AI服务/2026-11-18-Cliproxy代理IP产品与Claude-Code适用性.md)（2026-11-18）：区分静态、短效、动态住宅代理与 VPS，核查交付协议、宣传起价、退款限制及官网明确不支持在大陆使用的说明，未验证 Claude 可用性。
+- [Antigravity 登录的 Google 二维码验证处理](./AI服务/2026-11-17-Antigravity登录的Google二维码验证处理.md)（2026-11-17）：核查设备／手机号验证、扫码后的短信与号码受限处理，区分已登录设备二维码确认与反滥用验证，并标注替代方式和常见绕过说法的证据边界。
+- [中国大陆使用 Claude 订阅的方式与 IP、支付要求](./AI服务/2026-11-17-中国大陆使用Claude订阅的方式与IP支付要求.md)（2026-11-17）：核查 11 月 12 日地区政策、网页银行卡及 iOS/Android 内购要求，区分 IP 与所在地、礼品新购暂停、第三方代付和当前 Pro/Max/Ultra 套餐，并标注未实测项。
 
 ### AI语音
 
