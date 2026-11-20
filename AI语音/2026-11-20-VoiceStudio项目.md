@@ -1,6 +1,6 @@
 ---
 title: "VoiceStudio 项目调研"
-date: 2026-11-16
+date: 2026-11-20
 category: "AI语音"
 tags:
   - 语音合成
@@ -15,11 +15,9 @@ tags:
 
 # VoiceStudio 项目调研
 
-调研日期：2026-11-16。研究对象为 [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio)。GitHub 存在同名项目，本次根据搜索结果与本库旧文确认研究这一主仓库，而非中文翻译分支或其他同名工具。本次读取 GitHub API、官方文档、关键源码、发布记录、问题记录和上游模型卡，未安装应用、下载模型、运行语音推理或试听生成结果。
+调研日期为 2026-11-20。研究对象为 [debpalash/VoiceStudio](https://github.com/debpalash/VoiceStudio)。GitHub 存在同名项目，本次根据搜索结果与本库旧文确认研究这一主仓库。资料包括 GitHub API、官方文档、关键源码、发布记录、问题记录和上游模型卡。
 
-源码快照固定为 `6fe6f4dd62b477ab5fbf4d94500e3c0298d05232`，提交时间为 2026-11-16 13:06:14 UTC。读取时最新稳定版为 **v0.5.8**（11 月 12 日发布），最新已发布应用预览版为 **v0.5.9-beta.3**（11 月 16 日发布）；主分支已提交 beta.5 的发布准备，不能据此认定 beta.5 安装包已发布。下文将稳定版、后续 Beta 和主分支区分。[S1][S2]
-
-本次更新：整合 2026-10-26 的项目概览与 2026-11-16 的版本核查，保留声音工作流、转录、远程部署和 Agent 接入说明，更新 Windows 加速路径、版本与默认模型许可。本文只保留一份当前调研；历史版本可从 Git 中查看。合并整理未重新联网核查，不改变上述资料快照与验证范围。
+本次更新核查已发布的 **v0.5.8 稳定版**和 **v0.5.9-beta.6**，范围为 Windows 模型目录、CosyVoice 3 和 IndexTTS 2.5 的安装、现有环境复用、切换卸载及 8 GB 显存。补充三个引擎的配音操作，并记录本机 IndexTTS 2.5 与 VoxCPM2 的独立短句试跑。使用技巧依据上游示例和本机 v0.5.8 适配源码，音色与情绪表现以实际素材试听为准。其他功能、架构和问题记录沿用 2026-11-16 核查的源码快照 `6fe6f4dd62b477ab5fbf4d94500e3c0298d05232`，其中整合了 2026-10-26 的项目概览。[S1][S2]
 
 ## 1. 结论与使用建议
 
@@ -41,10 +39,11 @@ tags:
 
 ## 2. 仓库与版本现状
 
-读取时 GitHub API 显示约 **11.17 万 Stars、1.24 万 Forks**，仓库未归档，当天仍有推送。热度说明关注度，不能代替可用性验证。应用仍处于 `0.5.x`，更新频繁，也持续处理安装、驱动、模型加载和长任务问题。[S1][S2][S18]
+2026-11-16 读取 GitHub API 时约 **11.17 万 Stars、1.24 万 Forks**，仓库未归档，当天仍有推送。热度说明关注度，不能代替可用性验证。应用仍处于 `0.5.x`，更新频繁，也持续处理安装、驱动、模型加载和长任务问题。[S1][S2][S18]
 
 | 核查项 | 当前证据 | 使用影响 |
 | --- | --- | --- |
+| v0.5.9-beta.6 预览版 | 11 月 18 日发布，含低显存时的生成前清理及 CosyVoice 目录下载裁剪 | 初次试用优先稳定版，有具体需要再验证 Beta |
 | v0.5.8 稳定版 | 已有 Windows x64/ARM64、macOS、Linux 和手机构建附件 | 普通试用优先从稳定版开始；ARM64 和手机仍有各自实验/预览状态 |
 | OmniVoice GGUF/Vulkan | 已进入 v0.5.8，支持 Windows/Linux 的原生 GPU 发现与量化选择 | 低显存及非 NVIDIA 用户有更多路径 |
 | GGUF 音色设计、非语言标签、解码步数 | v0.5.8 引擎文档仍写“不支持音色设计”；beta.2 发布记录与主分支已补充 | 需要这些能力时核对 Beta 版本，不能套用到稳定版 |
@@ -107,6 +106,32 @@ Stories/Audiobook 用于长篇文本、分角色和章节制作；应用提供�
 
 VoiceStudio 研究的是模型之上的应用与集成工作流；模型本身的比较可继续看 [IndexTTS、Qwen3-TTS 与 VoxCPM2 对比](./2026-10-20-IndexTTS-Qwen3-TTS与VoxCPM2对比.md)。需要剪辑、人物口型重绘和混剪产线时，可衔接[视频口型与混剪方案](../AI内容创作/2026-09-04-AI混剪视频与口型语气同步开源方案.md)。
 
+### 三个本地模型的中文配音技巧
+
+**先用同一段录音测音色，再用同一句话测情绪。** 录一段约 5–10 秒的干净独白，保留自然语气，避开背景音乐、混响和其他人声。在声音库保存原音和逐字稿，逐字稿要与裁剪后的片段对应。第一轮用一条 20–40 字的真实台词，例如「我以为今天赶不上了，没想到你们都还在等我。」先生成基准版，再只改一项情绪或语速。比较是否像本人、情绪是否听得出来、人名是否读对、是否漏字或加词。时长是本机试用起点，可以按录音和稿件调整。 [VoiceStudio 表演指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/expressive-speech.md) · [VoxCPM2 使用指南](https://voxcpm.readthedocs.io/en/latest/usage_guide.html)
+
+#### IndexTTS 2.5 用同一音色演不同情绪
+
+- 在 **声音克隆 → 情绪** 先选关闭，听参考录音带来的基准语气。再打开情绪滑杆，只拉一个维度，例如将「惊讶」设为 0.5，其他项保持 0。需要更强表现时比较 0.3、0.5 和 0.7 三个试音，用听感选强度。上游八维顺序为开心、愤怒、悲伤、害怕、厌恶、忧郁、惊讶、平静。上游 API 保持 `use_random=False` 有利于音色相似度。 [VoiceStudio 情绪面板](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/indextts.md#voice-cloning-emotion-controls) · [IndexTTS 2.5 官方示例](https://github.com/index-tts/index-tts/blob/d9e41aac89fd00b3d71497fddb287b7f24613712/README.md)
+- **文字描述**可写「压着声音，先犹豫，最后一句有一点惊喜」。需要模仿一段具体表演时，用独立情绪参考音频。VoiceStudio v0.5.8 的合成界面提供描述和滑杆，独立情绪录音可从上游 WebUI 或 VoiceStudio 的 `/ws/tts` 传入。上游对说话人和情绪参考音频均按最多 15 秒处理。文字描述的上游建议强度约 0.6 或更低。 [VoiceStudio IndexTTS 指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/indextts.md) · [IndexTTS 推理实现](https://github.com/index-tts/index-tts/blob/bf2e967fac7933197143b017a60820b1ad40c448/indextts/infer_v2_5.py)
+- **调整台词长短**时，VoiceStudio 的 Speed 调大更快，上游 `duration_factor` 调小更快。例如 Speed 1.25 对应 `duration_factor=0.8`，可先生成试听，再在时间线上对齐。上游拼音格式可把「银行」写作 `银<行|HANG2>`，优先针对实际读错的字修正。 [VoiceStudio 语速映射](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/indextts.md#long-text-generation) · [IndexTTS 发音与语速示例](https://github.com/index-tts/index-tts/blob/d9e41aac89fd00b3d71497fddb287b7f24613712/README.md)
+
+#### VoxCPM2 先选克隆模式，再调表演
+
+- **想延续原来语气**，在 VoiceStudio 选本人参考音频、保留准确的参考转写，风格栏留空。VoiceStudio 会使用续写式克隆。**想保留音色、改变语气**，在风格栏写「轻声讲述，略带惊喜，语速稍慢」。风格会让 VoiceStudio 切换到可控克隆，参考录音提供音色。上游 API 对应分别是 `prompt_wav_path` 加 `prompt_text` 的续写条件，或 `reference_wav_path` 加正文前的半角括号指令。使用风格栏或正文前置括号时，留一个入口即可。 [VoiceStudio VoxCPM2 指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/voxcpm2.md) · [VoxCPM 2.0.3 官方示例](https://github.com/OpenBMB/VoxCPM/blob/2.0.3/README.md)
+- **想设计一个新角色**，在音色设计中清空参考音频，描述可听见的特征，例如「中年女声，中低音，语速稍慢，像在讲睡前故事」。选中满意的片段后保存为角色参考，后续台词复用。上游 Python 可从 `cfg_value=2.0`、`inference_timesteps=10` 开始，每次只调一个参数。声音已干净时先关闭参考降噪。遇到后半段加速、重复或失真，优先按语意拆段并重做坏段。 [VoxCPM2 使用指南](https://voxcpm.readthedocs.io/en/latest/usage_guide.html) · [VoxCPM 专题调研](./2026-08-19-VoxCPM.md#10-已知限制和真实反馈)
+
+#### CosyVoice 3 用参考录音建立基准，再加一条明确指令
+
+- **日常口播先用复刻模式。** 上传干净录音和对应逐字稿。VoiceStudio 有音频和逐字稿、风格为空时走 `inference_zero_shot`。填入风格后走 `inference_instruct2`。建议分两次试听，例如先填「稍慢，像在讲故事」，再单独试「语气轻快，结尾带一点惊喜」。用 VoiceStudio 的风格栏时，应用会补 CosyVoice 3 需要的 `<|endofprompt|>`，正文只填写要念的内容。直接调上游 Python API 时按官方示例给参考转写或指令添加对应的前缀和分隔符。 [VoiceStudio CosyVoice 适配器](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/backend/engines/cosyvoice_subprocess/main.py) · [CosyVoice 3 官方示例](https://github.com/QwenAudio/CosyVoice/blob/074ca6dc9e80a2f424f1f74b48bdd7d3fea531cc/example.py)
+- **难读的词先改写，再逐项试标签。** 数字、日期、单位和简称可直接写成目标读法。上游支持像 `[j][ǐ]予` 这样的拼音修正和 `[breath]` 呼吸标签，分开加到短句里试听。要精确留出一小段空白，在 VoiceStudio 正文用 `[pause 500ms]`，这个停顿由应用拼接。方言样片可以同时准备地道说法和明确指令，例如「请用广东话表达」。 [CosyVoice 3 官方示例](https://github.com/QwenAudio/CosyVoice/blob/074ca6dc9e80a2f424f1f74b48bdd7d3fea531cc/example.py) · [VoiceStudio 表演标签](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/expressive-speech.md)
+
+#### 长稿与 8 GB 显存
+
+按说话人、情绪变化和自然停顿切段。连续几句沿用同一个声音档案，每段先试听漏字和断句，再拼接。中英混读、专有名词和只有两三个字的反应词单独试听。切换引擎后留意工具栏 **Flush → Unload** 和任务管理器里的专用、共享显存。若生成突然变慢，先等当前任务结束，卸载空闲引擎，缩短测试台词，再试一次。 [VoiceStudio 性能指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/performance.md)
+
+本机 VoiceStudio v0.5.8 已用 RTX 4060 Ti 8 GB 分别完成 IndexTTS 2.5 和 VoxCPM2 的短句合成。用的是同一段项目自带参考录音，输出均为非静音 WAV。IndexTTS 试音期间一次观测到约 270 MiB 剩余显存，VoxCPM2 一次观测到约 520 MiB，均为采样值。长稿、并发与情绪效果仍需用实际素材验收。
+
 ## 5. Windows 部署与硬件成本
 
 普通 Windows 用户优先下载 `VoiceStudio-0.5.8-win-x64.exe`。当前桌面应用是 **Electron + React + Python/FastAPI**，旧 Tauri/MSI 已退出维护。安装包首次启动会引导准备 Python、FFmpeg、依赖和所需权重，普通安装不要求先配齐源码编译工具。[S2][S3]
@@ -123,6 +148,20 @@ VoiceStudio 研究的是模型之上的应用与集成工作流；模型本身�
 Windows 指南给出约 10 GB 初始空闲空间要求，但它不是“安装任意模型组合”的总容量上限。多个隔离引擎环境、模型、缓存、转录和配音临时文件会继续增长；建议把运行环境和模型位置提前选到空间充足的盘。没有必要为调研直接安装整套开发工具。
 
 官方 `benchmarks.md` 的结果表目前仍是 **No verified rows yet**，所以本报告不填造“某显卡几秒生成一分钟”的数据。GGUF 文档有约 659 MB/945 MB 等量化内存估值，也不应当作包含 Tokenizer、推理缓存、ASR 和并行工作负载的整机峰值。[S3][S5][S17]
+
+### 本机 RTX 4060 Ti 8 GB 的模型管理
+
+**建议用 VoiceStudio 作为日常配音工作台。** 模型目录管理按需安装和权重，声音库保存参考录音与逐字稿，配音项目和生成记录集中在同一个界面。两套引擎可以都装在磁盘上，实际生成时按需加载。稳定版的性能指南记录了默认只让一个 TTS 引擎驻留、切换时卸载空闲引擎，以及工具栏 `Flush` 中的逐模型 `Unload`。有任务还在运行时，先等任务结束再切换或卸载。 [稳定版性能指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/performance.md)
+
+| 引擎 | VoiceStudio 怎么管理 | 本机 8 GB 的取舍 |
+| --- | --- | --- |
+| **CosyVoice 3 Python** | **Model Catalogue → Engines → CosyVoice → Install**。稳定版可在原生 Windows 装独立 Python 3.10 和 CUDA PyTorch 2.7.0，并下载官方 2512 基础权重。PyWORLD 可能需要 Visual Studio C++ Build Tools。 | 这条路线可省去单独在 WSL2 配环境。适配器使用 `AutoModel(model_dir=...)` 的默认精度，不能直接套用上游 Python API 的 `fp16=True` 预估。安装版省略 WeText，重要数字、日期和符号可先写成读法再试听。 |
+| **IndexTTS 2.5** | 目录里点 **Install**，由应用安装固定版本的源码、权重和独立 Python 3.11 环境，预检约 12 GiB 磁盘。已有原生 Windows 环境可用 `OMNIVOICE_INDEXTTS_DIR` 指向包含 `.venv` 与 `checkpoints` 的仓库根目录。 | 适配器默认在支持的 GPU 上使用 BF16，并固定传入 `use_qwen_emo=True`。即使界面选择关闭情绪或用情绪滑杆，也会初始化 QwenEmotion。上游 WebUI 在低于 10 GiB 时默认跳过该模块，因此是 8 GB 发生 OOM 或共享内存分页时更可控的入口。 |
+| **CosyVoice 3 GGUF** | 模型目录可下 GGUF/ONNX 权重。Windows 还要自行构建社区 Vulkan 运行时。 | 可在 Python 版余量不足时评估。现有 NVIDIA 卡先试 Python 版，量化实际占用和音质靠样片确认。 |
+
+安装方法、权重状态与实际可用性分别看两个引擎的详细指南。已有 WSL2 CosyVoice 环境时，Windows 桌面版不能直接复用 Linux 的 Python 环境；源码集成要求运行 VoiceStudio 后端的解释器能够导入 `AutoModel`，再用 `OMNIVOICE_COSYVOICE_MODEL` 指向实际权重目录。IndexTTS 的声音档案可以继续用 VoiceStudio 管理，但其目录安装版和关联已有环境时均由同一适配器决定情绪模块初始化。 [CosyVoice 稳定版指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/cosyvoice.md) · [IndexTTS 稳定版指南](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/indextts.md) · [CosyVoice 调用](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/backend/engines/cosyvoice_subprocess/main.py#L229) · [IndexTTS 调用](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/backend/engines/indextts/main.py#L383) · [上游 WebUI 低显存逻辑](https://github.com/index-tts/index-tts/blob/d9e41aac89fd00b3d71497fddb287b7f24613712/webui.py#L115)
+
+首次安装可把 **App environment** 选在本机空间充足的 E 盘，让运行环境、模型和缓存放在同一盘。优先从 **v0.5.8 Windows x64** 装 CosyVoice 3 Python，用本人 3–8 秒干净录音和一句普通话验收。再卸载模型并试 IndexTTS 2.5，观察是否发生 CUDA OOM、共享显存明显上涨或速度异常。如遇到 IndexTTS 显存不足，优先用上游低显存 WebUI。Beta.6 新增了生成前的低显存清理逻辑，主要释放空闲听写模型、提示缓存和分配器缓存，两个独立推理进程的初始化参数仍如上。 [Windows 存储设置](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/install/windows.md) · [稳定版下载](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.8) · [Beta.6 发布](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.6) · [低显存清理实现](https://github.com/debpalash/VoiceStudio/pull/4117) · [本机上游部署和显存验收](./2026-11-20-CosyVoice-3与IndexTTS-2.5本地部署及8GB显存评估.md)
 
 ## 6. 技术架构与自动化接口
 
@@ -162,10 +201,10 @@ README 对 Cloud 的描述仍为 **coming soon / not available yet / early acces
 | 默认 OmniVoice | 上游区分 Apache-2.0 代码与 CC-BY-NC 预训练权重，Tokenizer 另有条款 | 代码开源不等于权重可商用；不能直接用于付费客户配音 |
 | OmniVoice GGUF | 转换权重保留其来源的非商业限制 | 换量化运行时不会获得商业授权 |
 | VoxCPM2 | 上游模型卡写明 Apache-2.0、free for commercial use | 可优先检查具体模型、依赖和参考声音后用于商业方案评估 |
-| IndexTTS 2.5 | bilibili Model Use License；超过特定规模需单独许可 | 用户或关联方上一自然月 MAU 超 1 亿、或上一自然年营收超 10 亿元人民币，须取得单独书面许可；另有用途和下游义务 |
+| IndexTTS 2.5 | bilibili Model Use License；超过特定规模需单独许可 | 用户或关联方上一自然月 MAU 超 1 亿、或上一自然年营收超 1 亿元人民币，须取得单独书面许可；另有用途和下游义务 |
 | 声音、配音文本、组件及输出 | 有独立权利与条件 | 应用许可和 Pro 均不替代这些来源的许可 |
 
-上述条件以各上游原协议及实际所用模型版本为准。[S6][S12][S13][S14]
+上述条件以各上游原协议及实际所用模型版本为准。IndexTTS 2.5 的英文条款 §2.2 写人民币 10 亿元，VoiceStudio 的引擎文档沿用了英文数字。英文协议明确约定冲突时以中文版为准，中文版 §2.2 写人民币 1 亿元。已核对 VoiceStudio 安装器所固定的上游源码和模型权重版本。[S6][S12][S13][S14] [固定源码中文版](https://github.com/index-tts/index-tts/blob/bf2e967fac7933197143b017a60820b1ad40c448/LICENSE_ZH.txt) · [固定权重英文版](https://huggingface.co/IndexTeam/IndexTTS-2.5/blob/d0aa86e75bb6f3437f3831e95056fa72842d89ef/LICENSE)
 
 另发现一处可复核的文档滞后：`docs/licensing/model-inventory.md` 写“63 个模型仓库、7 类动态资产”，但本次固定提交的 `backend/config/model_licenses.json` 实际包含 **73 条模型记录、7 类动态资产**；`commercial_use: true` 的记录数为 **0**。这里 false 同时包括已知非商业和未审完，**不能解释成 73 个模型全部禁止商用**。这体现的是项目自身尚未给出整套模型的商业审查完成承诺。[S16]
 
@@ -195,7 +234,7 @@ README 对 Cloud 的描述仍为 **coming soon / not available yet / early acces
 仓库文档和源码链接尽量固定到本次提交；Release 和 Issue 链接用于查看其各自版本和后续状态。上游模型卡为本次读取的公开页面，未来可能变化。
 
 - [S1：主仓库与 README](https://github.com/debpalash/VoiceStudio)；[本次提交](https://github.com/debpalash/VoiceStudio/commit/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232)。仓库统计来自 GitHub API。
-- [S2：v0.5.8 稳定版](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.8)、[beta.2](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.2)、[beta.3](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.3)。
+- [S2：v0.5.8 稳定版](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.8)、[beta.2](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.2)、[beta.3](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.3)、[beta.6](https://github.com/debpalash/VoiceStudio/releases/tag/v0.5.9-beta.6)。
 - [S3：Windows 指南](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/install/windows.md)、[Windows ROCm](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/install/windows-rocm.md)。
 - [S4：引擎总表与参考录音策略](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/engines/README.md)、[语言目录范围](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/languages.md)。
 - [S5：OmniVoice](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/engines/omnivoice.md)、[GGUF 主分支](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/engines/omnivoice-gguf.md)、[GGUF v0.5.8](https://github.com/debpalash/VoiceStudio/blob/v0.5.8/docs/engines/omnivoice-gguf.md)、[VoxCPM2](https://github.com/debpalash/VoiceStudio/blob/6fe6f4dd62b477ab5fbf4d94500e3c0298d05232/docs/engines/voxcpm2.md)。
